@@ -2,18 +2,24 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Todo } from '@prisma/client';
 import * as request from 'supertest'
-import { CreateTodoDto } from './dto/createTodo.dto';
+import { TodoCreateInput } from './dto/TodoCreateInput';
 
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
 
-const createTodoDto = new CreateTodoDto()
-createTodoDto.title = 'created todo'
-createTodoDto.content = 'create todo content'
-createTodoDto.published = false
-createTodoDto.createdAt = new Date()
-createTodoDto.updatedAt = new Date()
-const CREATE_RESULT: CreateTodoDto = createTodoDto
+const createTodoDto: TodoCreateInput = {
+  title: 'created todo',
+  content: 'create todo content'
+}
+
+const CREATE_RESULT: Todo = {
+  id: 1,
+  title: createTodoDto.title,
+  content: createTodoDto.content,
+  published: false,
+  createdAt: new Date(),
+  updatedAt: new Date()
+}
 
 const FIND_ONE_RESULT: Todo = {
   id: 2,

@@ -3,7 +3,7 @@ import { Todo } from '@prisma/client';
 import { plainToClass } from 'class-transformer';
 import { Request } from 'express';
 import { ApiNestedQuery } from './../decorators/api-nested-query.decorator';
-import { CreateTodoDto } from './dto/createTodo.dto';
+import { TodoCreateInput } from './dto/TodoCreateInput';
 import { TodoFindManyArgs } from './dto/TodoFindManyArgs';
 import { TodoService } from './todo.service';
 
@@ -14,8 +14,15 @@ export class TodoController {
 
   @Post()
   @UsePipes(ValidationPipe)
-  async create(@Body() createTodoDto: CreateTodoDto) {
-    return this.todoService.create(createTodoDto)
+  async create(@Body() createTodoDto: TodoCreateInput) {
+    return this.todoService.create({
+      data: {
+        ...createTodoDto,
+        published: false,
+        createdAt: new Date(),
+        updatedAt: new Date()
+      }
+    })
   }
 
   @Get()
