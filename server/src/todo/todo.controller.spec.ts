@@ -9,6 +9,7 @@ import { TodoFindManyArgs } from './dto/TodoFindManyArgs.dto';
 
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
+import { TodoFindUniqueArgs } from './dto/TodoFindUniqueArgs.dto';
 
 const createTodoDto: TodoCreateInput = {
   title: 'created todo',
@@ -69,7 +70,9 @@ const UPDATE_RESULT: Todo = {
 
 const service = {
   create: () => CREATE_RESULT,
-  findOne: () => FIND_ONE_RESULT,
+  findOne: (arg: any) => {
+    return arg.where.id === 100000 ? null : FIND_ONE_RESULT
+  },
   findAll: () => FIND_ALL_RESULT,
   delete: () => DELETE_RESULT,
   update: () => UPDATE_RESULT
@@ -118,35 +121,60 @@ describe('Todo', () => {
 
   })
 
-  describe("GET /todo", () => {
+  it("GET /todo", async () => {
 
-    it("returns all todos", async () => {
-      const query: TodoFindManyArgs = {
-        where: {
-          id: { equals: 1 },
-          content: { contains: 'a' }
-        },
-        orderBy: [
-          {
-            content: SortOrder.Asc
-          }
-        ],
-        skip: 1,
-        take: 2
-      }
+    const query: TodoFindManyArgs = {
+      where: {
+        id: { equals: 1 },
+        content: { contains: 'a' }
+      },
+      orderBy: [
+        {
+          content: SortOrder.Asc
+        }
+      ],
+      skip: 1,
+      take: 2
+    }
 
-      const querySearchParamsArgs = querySearchParams(query)
+    const querySearchParamsArgs = querySearchParams(query)
 
+    await request(app.getHttpServer())
+      .get(`/todo?${querySearchParamsArgs}`)
+      .expect(HttpStatus.OK)
+      .expect(FIND_ALL_RESULT.map(item => ({
+        ...item,
+        createdAt: item.createdAt.toISOString(),
+        updatedAt: item.updatedAt.toISOString(),
+      })
+      ))
+  })
+
+  describe("GET /todo/:id", () => {
+
+    it("successfull", async () => {
       await request(app.getHttpServer())
-        .get(`/todo?${querySearchParamsArgs}`)
+        .get(`/todo/1`)
         .expect(HttpStatus.OK)
-        .expect(FIND_ALL_RESULT.map(item => ({
-          ...item,
-          createdAt: item.createdAt.toISOString(),
-          updatedAt: item.updatedAt.toISOString(),
+        .expect({
+          ...FIND_ONE_RESULT,
+          createdAt: FIND_ONE_RESULT.createdAt.toISOString(),
+          updatedAt: FIND_ONE_RESULT.updatedAt.toISOString(),
         })
-        ))
     })
+
+    it("bad request", async () => {
+      await request(app.getHttpServer())
+        .get(`/todo/1asdasd`)
+        .expect(HttpStatus.BAD_REQUEST)
+    })
+
+    it("not found", async () => {
+      await request(app.getHttpServer())
+        .get(`/todo/100000`)
+        .expect(HttpStatus.NOT_FOUND)
+    })
+
 
   })
 

@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, UsePipes, ValidationPipe, Req, ParseIntPipe, NotFoundException } from '@nestjs/common';
 import { Todo } from '@prisma/client';
 import { plainToClass } from 'class-transformer';
 import { Request } from 'express';
@@ -34,7 +34,16 @@ export class TodoController {
   }
 
   @Get(':id')
-  findOne() {
+  async findOne(@Param('id', ParseIntPipe) id: number) {
+    const foundedTodo = await this.todoService.findOne({
+      where: { id }
+    })
+
+    if (!foundedTodo) {
+      throw new NotFoundException("No resource was found for id " + id)
+    }
+
+    return foundedTodo
   }
 
   @Patch(':id')
