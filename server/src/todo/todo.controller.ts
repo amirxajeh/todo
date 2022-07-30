@@ -10,7 +10,6 @@ export class TodoController {
   @Post()
   @UsePipes(ValidationPipe)
   async create(@Body() createTodoDto: CreateTodoDto) {
-    console.log(createTodoDto)
     return this.todoService.create(createTodoDto)
   }
 
