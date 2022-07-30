@@ -1,13 +1,10 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { BooleanFilter } from "../../util/BooleanFilter";
 import { Type } from "class-transformer";
-import { IsOptional, ValidateNested } from "class-validator";
-import { StringFilter } from "../../util/StringFilter";
+import { IsOptional } from "class-validator";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
-import { DateTimeNullableFilter } from "src/util/DateTimeNullableFilter";
-import { IntFilter } from "src/util/IntFilter";
-import { BooleanNullableFilter } from "src/util/BooleanNullableFilter";
-import { IntNullableFilter } from "src/util/IntNullableFilter";
+import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
+import { BooleanNullableFilter } from "../../util/BooleanNullableFilter";
+import { IntNullableFilter } from "../../util/IntNullableFilter";
 
 
 class TodoWhereInput {

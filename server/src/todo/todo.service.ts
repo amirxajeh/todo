@@ -2,9 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { Prisma, Todo } from '@prisma/client';
 import { PrismaService } from './../prisma.service';
 import { CreateTodoDto } from './dto/createTodo.dto';
-import { FindManyTodoArgsDto } from './dto/findManyTodoArgs.dto';
 import { FindOneTodoArgsDto } from './dto/findOneTodoArgs.dto';
 import { RemoveTodoArgsDto } from './dto/removeTodo.dto';
+import { TodoFindManyArgs } from './dto/TodoFindManyArgs';
 import { UpdateTodoDto } from './dto/updateTodo.dto';
 
 
@@ -18,7 +18,7 @@ export class TodoService {
     })
   }
 
-  async findAll(findManyTodoArgsDto: FindManyTodoArgsDto): Promise<Todo[]> {
+  async findAll(findManyTodoArgsDto: TodoFindManyArgs): Promise<Todo[]> {
     return this.prisma.todo.findMany(findManyTodoArgsDto)
   }
 
