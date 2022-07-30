@@ -1,7 +1,10 @@
 import { Test, TestingModule } from "@nestjs/testing"
+import { Prisma } from "@prisma/client"
 import { SortOrder } from "./../util/SortOrder"
 import { CreateTodoDto } from "./dto/createTodo.dto"
 import { TodoFindManyArgs } from "./dto/TodoFindManyArgs"
+import { TodoFindUniqueArgs } from "./dto/TodoFindUniqueArgs"
+import { TodoWhereUniqueInput } from "./dto/TodoWhereUniqueInput"
 import { TodoService } from "./todo.service"
 
 class MockTodoSerive {
@@ -62,19 +65,27 @@ describe("Todo Service", () => {
 
   })
 
-  // it("should call findOne method wuth expected params", () => {
-  //   const findOneTodoSpy = jest.spyOn(todoService, 'findOne')
+  it("should call findOne method wuth expected params", () => {
+    const findOneTodoSpy = jest.spyOn(todoService, 'findOne')
 
-  //   const args: FindOneTodoArgsDto = {
-  //     where: { id: 1 },
-  //     select: { content: true }
-  //   }
+    // args that pass into the controller
+    const args: TodoWhereUniqueInput = {
+      id: 1
+    }
 
-  //   todoService.findOne(args)
+    // all args that pass to service
+    const mainArgs: Prisma.TodoFindUniqueArgs = {
+      where: args,
+      select: {
+        content: true
+      }
+    }
 
-  //   expect(findOneTodoSpy).toHaveBeenCalledWith(args)
+    todoService.findOne(mainArgs)
 
-  // })
+    expect(findOneTodoSpy).toHaveBeenCalledWith(mainArgs)
+
+  })
 
   // it("should call update method wuth expected params", () => {
   //   const updateTodoSpy = jest.spyOn(todoService, 'update')

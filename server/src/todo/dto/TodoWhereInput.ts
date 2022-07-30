@@ -4,7 +4,7 @@ import { IsOptional } from "class-validator";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { DateTimeNullableFilter } from "../../util/DateTimeNullableFilter";
 import { BooleanNullableFilter } from "../../util/BooleanNullableFilter";
-import { IntNullableFilter } from "../../util/IntNullableFilter";
+import { IntFilter } from "../../util/IntFilter";
 
 
 class TodoWhereInput {
@@ -18,11 +18,11 @@ class TodoWhereInput {
 
   @ApiProperty({
     required: false,
-    type: IntNullableFilter,
+    type: IntFilter,
   })
-  @Type(() => IntNullableFilter)
+  @Type(() => IntFilter)
   @IsOptional()
-  id?: IntNullableFilter;
+  id?: IntFilter;
 
   @ApiProperty({
     required: false,
