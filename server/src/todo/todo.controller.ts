@@ -3,8 +3,8 @@ import { Todo } from '@prisma/client';
 import { plainToClass } from 'class-transformer';
 import { Request } from 'express';
 import { ApiNestedQuery } from './../decorators/api-nested-query.decorator';
-import { TodoCreateInput } from './dto/TodoCreateInput';
-import { TodoFindManyArgs } from './dto/TodoFindManyArgs';
+import { TodoCreateInput } from './dto/TodoCreateInput.dto';
+import { TodoFindManyArgs } from './dto/TodoFindManyArgs.dto';
 import { TodoService } from './todo.service';
 
 

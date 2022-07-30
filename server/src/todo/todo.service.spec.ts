@@ -1,11 +1,11 @@
 import { Test, TestingModule } from "@nestjs/testing"
 import { Prisma } from "@prisma/client"
 import { SortOrder } from "./../util/SortOrder"
-import { TodoCreateInput } from "./dto/TodoCreateInput"
-import { TodoFindManyArgs } from "./dto/TodoFindManyArgs"
-import { TodoFindUniqueArgs } from "./dto/TodoFindUniqueArgs"
-import { TodoUpdateInput } from "./dto/TodoUpdateInput"
-import { TodoWhereUniqueInput } from "./dto/TodoWhereUniqueInput"
+import { TodoCreateInput } from "./dto/TodoCreateInput.dto"
+import { TodoFindManyArgs } from "./dto/TodoFindManyArgs.dto"
+import { TodoFindUniqueArgs } from "./dto/TodoFindUniqueArgs.dto"
+import { TodoUpdateInput } from "./dto/TodoUpdateInput.dto"
+import { TodoWhereUniqueInput } from "./dto/TodoWhereUniqueInput.dto"
 import { TodoService } from "./todo.service"
 
 class MockTodoSerive {

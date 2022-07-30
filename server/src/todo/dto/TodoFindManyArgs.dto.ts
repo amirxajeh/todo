@@ -1,7 +1,7 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { TodoWhereInput } from "./TodoWhereInput";
+import { TodoWhereInput } from "./TodoWhereInput.dto";
 import { Type } from "class-transformer";
-import { TodoOrderByInput } from "./TodoOrderByInput";
+import { TodoOrderByInput } from "./TodoOrderByInput.dto";
 
 export class TodoFindManyArgs {
   @ApiProperty({

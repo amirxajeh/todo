@@ -2,7 +2,7 @@ import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Todo } from '@prisma/client';
 import * as request from 'supertest'
-import { TodoCreateInput } from './dto/TodoCreateInput';
+import { TodoCreateInput } from './dto/TodoCreateInput.dto';
 
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
