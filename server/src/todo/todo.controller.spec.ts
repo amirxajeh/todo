@@ -1,20 +1,86 @@
+import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
+import { Todo } from '@prisma/client';
+import * as request from 'supertest'
+
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
 
-describe('TodoController', () => {
-  let controller: TodoController;
+const CREATE_RESULT: Todo = {
+  id: 1,
+  title: 'created todo',
+  content: 'create todo content',
+  published: false
+}
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
+const FIND_ONE_RESULT: Todo = {
+  id: 2,
+  title: 'founded todo',
+  content: 'founded todo content',
+  published: true
+}
+
+const FIND_ALL_RESULT: Todo[] = [
+  {
+    id: 1,
+    title: 'founded all todo',
+    content: 'founded all todo content',
+    published: false
+  },
+  {
+    id: 2,
+    title: 'founded all todo 2',
+    content: 'founded all todo content 2',
+    published: false
+  }
+]
+
+const DELETE_RESULT = {
+  id: 1
+}
+
+const UPDATE_RESULT: Todo = {
+  id: 3,
+  title: 'UPDATED TODO',
+  content: 'Updated todo content',
+  published: true
+}
+
+const service = {
+  create: () => CREATE_RESULT,
+  findOne: () => FIND_ONE_RESULT,
+  findAll: () => FIND_ALL_RESULT,
+  delete: () => DELETE_RESULT,
+  update: () => UPDATE_RESULT
+}
+
+describe('Todo', () => {
+  let app: INestApplication;
+
+  beforeAll(async () => {
+    const moduleRef = await Test.createTestingModule({
+      providers: [
+        {
+          provide: TodoService,
+          useValue: service,
+        },
+      ],
       controllers: [TodoController],
-      providers: [TodoService],
-    }).compile();
+    })
+      .compile();
 
-    controller = module.get<TodoController>(TodoController);
+    app = moduleRef.createNestApplication();
+    await app.init();
   });
 
-  it('should be defined', () => {
-    expect(controller).toBeDefined();
+  it("POST /todo", async () => {
+    await request(app.getHttpServer())
+      .post('/todo')
+      .expect(HttpStatus.CREATED)
+      .expect(CREATE_RESULT)
+  })
+
+  afterAll(async () => {
+    await app.close();
   });
 });
