@@ -5,6 +5,7 @@ import { Request } from 'express';
 import { ApiNestedQuery } from './../decorators/api-nested-query.decorator';
 import { TodoCreateInput } from './dto/TodoCreateInput.dto';
 import { TodoFindManyArgs } from './dto/TodoFindManyArgs.dto';
+import { TodoUpdateInput } from './dto/TodoUpdateInput.dto';
 import { TodoService } from './todo.service';
 
 
@@ -46,8 +47,24 @@ export class TodoController {
     return foundedTodo
   }
 
+  @UsePipes(ValidationPipe)
   @Patch(':id')
-  update() {
+  async update(
+    @Param('id', ParseIntPipe) id: number,
+    @Body() updateTodoDto: TodoUpdateInput
+  ) {
+    const result = await this.todoService.update({
+      data: updateTodoDto,
+      where: {
+        id
+      }
+    })
+
+    if (!result) {
+      throw new NotFoundException("not found any todo with id " + id)
+    }
+
+    return result
   }
 
   @Delete(':id')

@@ -75,7 +75,9 @@ const service = {
   },
   findAll: () => FIND_ALL_RESULT,
   delete: () => DELETE_RESULT,
-  update: () => UPDATE_RESULT
+  update: (arg: any) => {
+    return arg.where.id === 1000 ? null : UPDATE_RESULT
+  }
 }
 
 describe('Todo', () => {
@@ -174,8 +176,27 @@ describe('Todo', () => {
         .get(`/todo/100000`)
         .expect(HttpStatus.NOT_FOUND)
     })
+  })
 
+  describe("PATCH /todo/:id", () => {
 
+    it("successfully update a todo", async () => {
+      await request(app.getHttpServer())
+        .patch('/todo/1')
+        .send(UPDATE_RESULT)
+        .expect({
+          ...UPDATE_RESULT,
+          createdAt: UPDATE_RESULT.createdAt.toISOString(),
+          updatedAt: UPDATE_RESULT.updatedAt.toISOString(),
+        })
+    })
+
+    it("Not Found desire todo", async () => {
+      await request(app.getHttpServer())
+        .patch('/todo/1000')
+        .send({})
+        .expect(HttpStatus.NOT_FOUND)
+    })
   })
 
   afterAll(async () => {
