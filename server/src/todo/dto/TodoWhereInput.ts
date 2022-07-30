@@ -5,24 +5,27 @@ import { IsOptional, ValidateNested } from "class-validator";
 import { StringFilter } from "../../util/StringFilter";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
 import { DateTimeNullableFilter } from "src/util/DateTimeNullableFilter";
+import { IntFilter } from "src/util/IntFilter";
+import { BooleanNullableFilter } from "src/util/BooleanNullableFilter";
+import { IntNullableFilter } from "src/util/IntNullableFilter";
 
 
 class TodoWhereInput {
   @ApiProperty({
     required: false,
-    type: BooleanFilter,
+    type: BooleanNullableFilter,
   })
-  @Type(() => BooleanFilter)
+  @Type(() => BooleanNullableFilter)
   @IsOptional()
-  published?: BooleanFilter;
+  published?: BooleanNullableFilter;
 
   @ApiProperty({
     required: false,
-    type: StringFilter,
+    type: IntNullableFilter,
   })
-  @Type(() => StringFilter)
+  @Type(() => IntNullableFilter)
   @IsOptional()
-  id?: StringFilter;
+  id?: IntNullableFilter;
 
   @ApiProperty({
     required: false,

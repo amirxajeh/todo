@@ -1,6 +1,7 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestFactory } from '@nestjs/core';
 import { DocumentBuilder, SwaggerDocumentOptions, SwaggerModule } from '@nestjs/swagger';
+import { queryParser } from 'express-query-parser';
 import { AppModule } from './app.module';
 
 async function bootstrap() {
@@ -22,6 +23,15 @@ async function bootstrap() {
   const document = SwaggerModule.createDocument(app, config, options);
 
   SwaggerModule.setup('api', app, document);
+
+  app.use(
+    queryParser({
+      parseNull: true,
+      parseUndefined: true,
+      parseBoolean: true,
+      parseNumber: true
+    })
+  )
 
   await app.listen(3000);
 }
