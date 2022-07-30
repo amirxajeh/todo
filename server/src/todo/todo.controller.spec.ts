@@ -56,7 +56,12 @@ const FIND_ALL_RESULT: Todo[] = [
 ]
 
 const DELETE_RESULT = {
-  id: 1
+  id: 2,
+  title: 'deleted todo',
+  content: 'deleted todo content',
+  published: true,
+  createdAt: new Date(),
+  updatedAt: new Date()
 }
 
 const UPDATE_RESULT: Todo = {
@@ -74,7 +79,7 @@ const service = {
     return arg.where.id === 100000 ? null : FIND_ONE_RESULT
   },
   findAll: () => FIND_ALL_RESULT,
-  delete: () => DELETE_RESULT,
+  remove: (arg: any) => arg.where.id == 1000 ? null : DELETE_RESULT,
   update: (arg: any) => {
     return arg.where.id === 1000 ? null : UPDATE_RESULT
   }
@@ -195,6 +200,28 @@ describe('Todo', () => {
       await request(app.getHttpServer())
         .patch('/todo/1000')
         .send({})
+        .expect(HttpStatus.NOT_FOUND)
+    })
+  })
+
+
+  describe("DELETE /todo/:id", () => {
+
+    it("successfully delete todo", async () => {
+      await request(app.getHttpServer())
+        .delete('/todo/1')
+        .expect(HttpStatus.OK)
+        .expect({
+          ...DELETE_RESULT,
+          createdAt: DELETE_RESULT.createdAt.toISOString(),
+          updatedAt: DELETE_RESULT.updatedAt.toISOString(),
+        })
+    })
+
+
+    it("Not Found desire todo", async () => {
+      await request(app.getHttpServer())
+        .delete('/todo/1000')
         .expect(HttpStatus.NOT_FOUND)
     })
   })

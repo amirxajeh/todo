@@ -68,6 +68,18 @@ export class TodoController {
   }
 
   @Delete(':id')
-  remove() {
+  async remove(@Param('id', ParseIntPipe) id: number) {
+    const result = await this.todoService.remove({
+      where: {
+        id
+      }
+    })
+
+    if (!result) {
+      throw new NotFoundException("not found any todo with id " + id)
+    }
+
+    return result
+
   }
 }
