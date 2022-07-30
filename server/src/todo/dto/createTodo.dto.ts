@@ -7,8 +7,9 @@ export class CreateTodoDto {
   @IsNotEmpty()
   content: string
 
+  @IsOptional()
   @IsBoolean()
-  published: boolean
+  published?: boolean
 
   @IsOptional()
   createdAt?: Date
