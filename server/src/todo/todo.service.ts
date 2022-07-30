@@ -28,8 +28,10 @@ export class TodoService {
     return this.prisma.todo.findUnique(args)
   }
 
-  async update(updateTodoDto: UpdateTodoDto) {
-    return this.prisma.todo.update(updateTodoDto)
+  async update<T extends Prisma.TodoUpdateArgs>(
+    args: Prisma.SelectSubset<T, Prisma.TodoUpdateArgs>
+  ): Promise<Todo> {
+    return this.prisma.todo.update<T>(args);
   }
 
   async remove(removeTodoDto: RemoveTodoArgsDto) {

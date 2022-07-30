@@ -4,6 +4,7 @@ import { SortOrder } from "./../util/SortOrder"
 import { CreateTodoDto } from "./dto/createTodo.dto"
 import { TodoFindManyArgs } from "./dto/TodoFindManyArgs"
 import { TodoFindUniqueArgs } from "./dto/TodoFindUniqueArgs"
+import { TodoUpdateInput } from "./dto/TodoUpdateInput"
 import { TodoWhereUniqueInput } from "./dto/TodoWhereUniqueInput"
 import { TodoService } from "./todo.service"
 
@@ -87,23 +88,27 @@ describe("Todo Service", () => {
 
   })
 
-  // it("should call update method wuth expected params", () => {
-  //   const updateTodoSpy = jest.spyOn(todoService, 'update')
+  it("should call update method wuth expected params", () => {
+    const updateTodoSpy = jest.spyOn(todoService, 'update')
 
-  //   const args: UpdateTodoDto = {
-  //     data: {
-  //       title: "heloo"
-  //     },
-  //     where: {
-  //       id: 1
-  //     }
-  //   }
+    const data: TodoUpdateInput = {
+      content: 'new content',
+      published: false
+    }
+    const id = 1
 
-  //   todoService.update(args)
+    const mainArgs: Prisma.TodoUpdateArgs = {
+      data,
+      where: {
+        id
+      }
+    }
 
-  //   expect(updateTodoSpy).toHaveBeenCalledWith(args)
+    todoService.update(mainArgs)
 
-  // })
+    expect(updateTodoSpy).toHaveBeenCalledWith(mainArgs)
+
+  })
 
   // it("should call remove method wuth expected params", () => {
   //   const removeTodoSpy = jest.spyOn(todoService, 'remove')
