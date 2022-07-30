@@ -110,18 +110,21 @@ describe("Todo Service", () => {
 
   })
 
-  // it("should call remove method wuth expected params", () => {
-  //   const removeTodoSpy = jest.spyOn(todoService, 'remove')
+  it("should call remove method wuth expected params", () => {
+    const removeTodoSpy = jest.spyOn(todoService, 'remove')
 
-  //   const args: Prisma.TodoDeleteArgs = {
-  //     where: {
-  //       id: 1
-  //     }
-  //   }
+    const args: Prisma.TodoDeleteArgs = {
+      where: {
+        id: 1
+      },
+      select: {
+        content: true
+      }
+    }
 
-  //   todoService.remove(args)
+    todoService.remove(args)
 
-  //   expect(removeTodoSpy).toHaveBeenCalledWith(args)
+    expect(removeTodoSpy).toHaveBeenCalledWith(args)
 
-  // })
+  })
 })

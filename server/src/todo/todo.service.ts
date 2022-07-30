@@ -34,7 +34,7 @@ export class TodoService {
     return this.prisma.todo.update<T>(args);
   }
 
-  async remove(removeTodoDto: RemoveTodoArgsDto) {
+  async remove(removeTodoDto: Prisma.TodoDeleteArgs) {
     return this.prisma.todo.delete(removeTodoDto)
   }
 }
