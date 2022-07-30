@@ -1,7 +1,7 @@
 import { Test, TestingModule } from "@nestjs/testing"
 import { Prisma } from "@prisma/client"
 import { SortOrder } from "./../util/SortOrder"
-import { CreateTodoDto } from "./dto/createTodo.dto"
+import { TodoCreateInput } from "./dto/TodoCreateInput"
 import { TodoFindManyArgs } from "./dto/TodoFindManyArgs"
 import { TodoFindUniqueArgs } from "./dto/TodoFindUniqueArgs"
 import { TodoUpdateInput } from "./dto/TodoUpdateInput"
@@ -34,16 +34,23 @@ describe("Todo Service", () => {
   it("should call create method with expected params", () => {
     const createTodoSpy = jest.spyOn(todoService, 'create')
 
-    const dto = new CreateTodoDto()
-    dto.title = "title"
-    dto.content = "content"
-    dto.published = false
-    dto.createdAt = new Date()
-    dto.updatedAt = new Date()
+    const data: TodoCreateInput = {
+      title: 'new title',
+      content: 'new content'
+    }
 
-    todoService.create(dto)
+    const allArgs = {
+      data: {
+        ...data,
+        createdAt: new Date(),
+        updatedAt: new Date(),
+        published: false
+      }
+    }
 
-    expect(createTodoSpy).toHaveBeenCalledWith(dto)
+    todoService.create(allArgs)
+
+    expect(createTodoSpy).toHaveBeenCalledWith(allArgs)
   })
 
   it("should call findAll method wuth expected params", () => {
