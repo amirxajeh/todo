@@ -34,6 +34,7 @@ export class TodoController {
     return await this.todoService.findAll(query)
   }
 
+  @ApiNestedQuery(TodoFindManyArgs)
   @Get(':id')
   async findOne(@Param('id', ParseIntPipe) id: number) {
     const foundedTodo = await this.todoService.findOne({
