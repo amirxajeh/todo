@@ -1,8 +1,11 @@
 import { HttpStatus, INestApplication } from '@nestjs/common';
 import { Test, TestingModule } from '@nestjs/testing';
 import { Todo } from '@prisma/client';
+import { SortOrder } from '../util/SortOrder';
+import { querySearchParams } from '../util/test/querySearchParams.util';
 import * as request from 'supertest'
 import { TodoCreateInput } from './dto/TodoCreateInput.dto';
+import { TodoFindManyArgs } from './dto/TodoFindManyArgs.dto';
 
 import { TodoController } from './todo.controller';
 import { TodoService } from './todo.service';
@@ -111,6 +114,38 @@ describe('Todo', () => {
         .post('/todo')
         .set('Accept', 'application/json')
         .expect(HttpStatus.BAD_REQUEST)
+    })
+
+  })
+
+  describe("GET /todo", () => {
+
+    it("returns all todos", async () => {
+      const query: TodoFindManyArgs = {
+        where: {
+          id: { equals: 1 },
+          content: { contains: 'a' }
+        },
+        orderBy: [
+          {
+            content: SortOrder.Asc
+          }
+        ],
+        skip: 1,
+        take: 2
+      }
+
+      const querySearchParamsArgs = querySearchParams(query)
+
+      await request(app.getHttpServer())
+        .get(`/todo?${querySearchParamsArgs}`)
+        .expect(HttpStatus.OK)
+        .expect(FIND_ALL_RESULT.map(item => ({
+          ...item,
+          createdAt: item.createdAt.toISOString(),
+          updatedAt: item.updatedAt.toISOString(),
+        })
+        ))
     })
 
   })
