@@ -45,7 +45,7 @@ describe('UsersService', () => {
     expect(findOneUserSpy).toHaveBeenCalledWith(mainArgs)
   })
 
-  it("should call findOne with expected 'id' params", async () => {
+  it("should call findOne with expected 'username' params", async () => {
     const findOneUserSpy = jest.spyOn(userService, 'findOne')
 
     const args: UserWhereUniqueUsernameInputDto = {
