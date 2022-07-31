@@ -10,6 +10,11 @@ const VALID_CREDENTIALS: CredentialsDto = {
   password: "Valid User Password",
 };
 
+const INVALID_CREDENTIALS: CredentialsDto = {
+  username: "Invalid User",
+  password: "Invalid User Password",
+};
+
 const USER: User = {
   ...VALID_CREDENTIALS,
   createdAt: new Date(),
@@ -60,6 +65,15 @@ describe('AuthService', () => {
         username: USER.username,
         id: USER.id
       })
+    })
+
+    it('invalid credentials', async () => {
+      await expect(
+        authService.validateUser(
+          INVALID_CREDENTIALS.username,
+          INVALID_CREDENTIALS.password
+        )
+      ).resolves.toEqual(null)
     })
   })
 });
